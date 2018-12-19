@@ -11,7 +11,6 @@ def compose2[A](optF: Option[A => A], optG: Option[A => A]): Option[A => A] = (o
   case (None, _) => optG
 }
 
-Seq.e
 
 def funA(i: Int) = i + 1
 def funB(i: Int) = i * 3
