@@ -15,7 +15,11 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-graphx" % sparkVersion,
   "org.apache.spark" %% "spark-mllib" % sparkVersion,
   "org.typelevel" %% "cats-core" % catsVersion,
-  "org.slf4j" % "slf4j-api" % slf4jVersion
+  "org.slf4j" % "slf4j-api" % slf4jVersion,
+
+  "com.github.vickumar1981" %% "stringdistance" % "1.1.1",
+  
+
 
 ).map(_.exclude("ch.qos.logback", "*"))
 
