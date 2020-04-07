@@ -1,7 +1,5 @@
-import org.apache.spark.sql.{DataFrame, Row, SaveMode, SparkSession}
-import org.apache.spark.sql.functions._
-import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.catalyst.encoders.{ExpressionEncoder, RowEncoder}
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 import scala.collection.JavaConverters._
@@ -12,12 +10,9 @@ val spark = SparkSession.builder()
   .config("spark.ui.showConsoleProgress", true)
   .getOrCreate()
 
-import spark.implicits._
-
-def removeWhiteSpace(s: Any): String = s match {
-  case s if (s == null) => "_"
-  case s => s.toString.replace(" ", "")
-}
+def removeWhiteSpace(s: Any): String = Option(s)
+  .map(_.toString.replace(" ", ""))
+  .getOrElse("_")
 
 val raw = spark
   .read
@@ -37,6 +32,7 @@ val df = raw
           .map(removeWhiteSpace)
           .map(StructField(_, StringType))))
 }
+
 df.show()
 
 
