@@ -6,7 +6,7 @@ scalaVersion := "2.12.8"
 
 val circeVersion = "0.8.0"
 val catsVersion = "1.5.0"
-val sparkVersion = "2.4.0"
+val sparkVersion = "2.4.4"
 val slf4jVersion = "1.7.16"
 
 libraryDependencies ++= Seq(
@@ -29,9 +29,6 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-Xlint",
   "-Xlint:missing-interpolator",
-  "-Ywarn-unused-import",
-  "-Ywarn-unused",
-  "-Ywarn-dead-code",
   "-Ypartial-unification",
   "-language:_",
   "-encoding", "UTF-8"
