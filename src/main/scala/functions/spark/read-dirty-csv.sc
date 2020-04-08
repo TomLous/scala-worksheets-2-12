@@ -18,8 +18,8 @@ val raw = spark
 val encoder = RowEncoder(raw.schema)
 
 val df:Dataset[DirtyResult] = raw
-  .mapPartitions(_.drop(3))(encoder)
-  .flatMap(row => DirtyMapper.mapRowsToResults(row))
+  .mapPartitions(_.drop(4))(encoder) // ignore all including headers
+  .flatMap(DirtyMapper.mapRowsToResults(_))
 
 
 df.show()
@@ -35,4 +35,10 @@ df.printSchema()
 |  3| 22|  bb| 23.4|
 |  4| 33|  cc| 25.6|
 +---+---+----+-----+
+
+root
+ |-- id: integer (nullable = false)
+ |-- num: integer (nullable = false)
+ |-- text: string (nullable = true)
+ |-- value: double (nullable = false)
  */

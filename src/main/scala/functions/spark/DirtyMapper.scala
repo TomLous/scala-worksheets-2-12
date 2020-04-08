@@ -13,7 +13,7 @@ object DirtyMapper extends Serializable {
             row.getString(3),
             row.getString(4).toDouble
           )
-        }.toOption
+        }.toOption // Maybe use a logger to log skipped records?
       }
 
 }
