@@ -1,8 +1,7 @@
-import org.apache.spark.sql.SparkSession
+import functions.spark.{DirtyMapper, DirtyResult}
+import org.apache.spark.sql.{Dataset, SparkSession}
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
-import scala.collection.JavaConverters._
 
 val spark = SparkSession.builder()
   .master("local[3]")
@@ -10,9 +9,7 @@ val spark = SparkSession.builder()
   .config("spark.ui.showConsoleProgress", true)
   .getOrCreate()
 
-def removeWhiteSpace(s: Any): String = Option(s)
-  .map(_.toString.replace(" ", ""))
-  .getOrElse("_")
+import spark.implicits._
 
 val raw = spark
   .read
@@ -20,31 +17,22 @@ val raw = spark
 
 val encoder = RowEncoder(raw.schema)
 
-val df = raw
+val df:Dataset[DirtyResult] = raw
   .mapPartitions(_.drop(3))(encoder)
-  .collect()
-  .toList match {
-  case header :: rows =>
-    spark
-      .createDataFrame(rows.asJava,
-        StructType(header
-          .toSeq
-          .map(removeWhiteSpace)
-          .map(StructField(_, StringType))))
-}
+  .flatMap(row => DirtyMapper.mapRowsToResults(row))
+
 
 df.show()
 
+df.printSchema()
+
 
 /*
-+----+----+-------+----------+----+----+
-|   _|   1|tomTest|ohipipeloi|   _|   _|
-+----+----+-------+----------+----+----+
-|   a|   2|     11|        aa|null|null|
-|   b|   3|     22|        bb|null|null|
-|   c|   4|     33|        cc|null|null|
-|null|null|   null|      null|null|null|
-|null|null|   null|      null|null|null|
-|dddd| ddd|    ddd|       ddd| ddd|null|
-+----+----+-------+----------+----+----+
++---+---+----+-----+
+| id|num|text|value|
++---+---+----+-----+
+|  2| 11|  aa| 12.3|
+|  3| 22|  bb| 23.4|
+|  4| 33|  cc| 25.6|
++---+---+----+-----+
  */
