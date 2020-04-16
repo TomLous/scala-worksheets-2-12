@@ -11,3 +11,6 @@ case class ItemA(name: String, value:Double) extends Item{
 case class ItemB(num: Int, value:Double) extends Item{
   override val key: String = num.toString
 }
+
+
+case class KeyedItem[+T <: Item](key: String, value: T)
