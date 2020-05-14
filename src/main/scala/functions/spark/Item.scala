@@ -14,3 +14,8 @@ case class ItemB(num: Int, value:Double) extends Item{
 
 
 case class KeyedItem[+T <: Item](key: String, value: T)
+
+
+case class ItemC(name: String, value: Double,  num: Int ) extends Item{
+  override val key: String = name
+}
