@@ -56,6 +56,8 @@ def isValidSolution(solution:List[Int]):Boolean = {
 
 val possibleSolutions = List(1,2,3,4,5,6,7,8).permutations.toList
 
+println(possibleSolutions.size)
+
 possibleSolutions.filter(isValidSolution).foreach(printMatrixSolution)
 
 //printMatrixSolution(matrixDefinition, List(0,0,0,0,0,0,0,0))

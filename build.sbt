@@ -2,12 +2,16 @@ name := "scala-worksheets-2"
 
 version := "0.1"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.16"
 
-val circeVersion = "0.12.0"
-val catsVersion = "1.5.0"
-val sparkVersion = "2.4.4"
-val slf4jVersion = "1.7.16"
+val circeVersion = "0.14.1"
+val catsVersion = "2.7.0"
+val sparkVersion = "3.2.1"
+val slf4jVersion = "1.7.30"
+
+resolvers ++= Seq(
+  "Splunk Releases" at "https://splunk.jfrog.io/splunk/ext-releases-local"
+)
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
@@ -20,13 +24,10 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
   "io.circe" %% "circe-optics" % circeVersion,
-  "com.github.vickumar1981" %% "stringdistance" % "1.1.1",
-
+  "com.github.vickumar1981" %% "stringdistance" % "1.2.7",
+  "org.json4s" %% "json4s-jackson" % "3.6.9",
+  "com.splunk.logging" % "splunk-library-javalogging" % "1.11.5" % Runtime
 ).map(_.exclude("ch.qos.logback", "*"))
-
-addCompilerPlugin(
-  "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
-)
 
 scalacOptions ++= Seq(
   "-unchecked",
@@ -35,5 +36,6 @@ scalacOptions ++= Seq(
   "-Xlint:missing-interpolator",
   "-Ypartial-unification",
   "-language:_",
-  "-encoding", "UTF-8"
+  "-encoding",
+  "UTF-8"
 )
